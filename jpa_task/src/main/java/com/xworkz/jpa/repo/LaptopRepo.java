@@ -29,4 +29,27 @@ public class LaptopRepo {
         return false;
     }
 
+    public void updateDataInDB(int id,String brand,String sellerName){
+        EntityManagerFactory emf=Persistence.createEntityManagerFactory("Flair");
+        EntityManager em=emf.createEntityManager();
+        EntityTransaction et=em.getTransaction();
+
+        try{
+           et.begin();
+           LaptopEntity laptopEntity=em.find(LaptopEntity.class,1);
+           if(laptopEntity != null)
+           laptopEntity.setBrand(brand);
+           laptopEntity.setSellerName(sellerName);
+           em.merge(laptopEntity);
+               et.commit();
+
+    }catch (Exception e){
+            e.getMessage();
+            et.rollback();
+        }finally {
+            emf.close();
+            em.close();
+        }
+        }
+
 }
